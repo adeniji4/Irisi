@@ -1,55 +1,137 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Country, State } from 'country-state-city';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { useCart } from '../contexts/CartContext';
+import { PaystackButton } from 'react-paystack';
+
+const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
+
+const initialFormData = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  address: '',
+  city: '',
+  state: '',
+  country: '',
+  zipCode: '',
+  sameAsBilling: true,
+  shippingFirstName: '',
+  shippingLastName: '',
+  shippingAddress: '',
+  shippingCity: '',
+  shippingState: '',
+  shippingZipCode: ''
+};
+
+// Reusable class for consistent styling
+const fieldClass =
+  "mt-2 w-full border border-gray-200 focus:border-black rounded-md py-2 px-3 text-sm font-inter";
+
+const requiredFields = [
+  'firstName',
+  'lastName',
+  'email',
+  'address',
+  'city',
+  'state',
+  'country',
+  'phone',
+];
 
 const Payment = () => {
-  const [step, setStep] = useState(3); // Current step: Payment
-  const [formData, setFormData] = useState({
-    // Billing Address
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    
-    // Shipping Address
-    sameAsBilling: true,
-    shippingFirstName: '',
-    shippingLastName: '',
-    shippingAddress: '',
-    shippingCity: '',
-    shippingState: '',
-    shippingZipCode: '',
-    
-    // Payment
-    cardName: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvv: ''
-  });
+  const [step, setStep] = useState(3);
+  const [formData, setFormData] = useState(initialFormData);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const cartItems = [
-    {
-      id: 1,
-      name: 'Ankara Evening Gown',
-      price: 450000,
-      quantity: 1
-    },
-    {
-      id: 2,
-      name: 'Contemporary Agbada',
-      price: 320000,
-      quantity: 1
+  const { cartItems, clearCart } = useCart();
+
+  // Country/State logic
+  const countries = Country.getAllCountries();
+  const states = formData.country ? State.getStatesOfCountry(formData.country) : [];
+  const selectedCountry = countries.find(c => c.isoCode === formData.country);
+
+  const getTotalPrice = () => {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shipping = 15000;
+    return subtotal + shipping;
+  };
+
+  const isFormValid =
+    formData.firstName.trim() &&
+    formData.lastName.trim() &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+    formData.address.trim() &&
+    formData.city.trim() &&
+    formData.state.trim() &&
+    formData.country.trim() &&
+    formData.phone.trim();
+
+  const email = formData.email;
+  const amount = getTotalPrice() * 100;
+
+  // Send order/payment info to backend, clear cart and form
+  const handleOrderSuccess = async (reference: string) => {
+    setLoading(true);
+    try {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cartItems,
+          customer: formData,
+          paymentReference: reference,
+        }),
+      });
+      clearCart();
+      setStep(4);
+      setPaymentSuccess(true);
+      setFormData(initialFormData);
+    } catch (error) {
+      alert('Order update failed. Please contact support.');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const componentProps = {
+    email,
+    amount,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Customer Name",
+          variable_name: "customer_name",
+          value: `${formData.firstName} ${formData.lastName}`,
+        },
+        {
+          display_name: "Billing Address",
+          variable_name: "billing_address",
+          value: `${formData.address}, ${formData.city}, ${formData.state}, ${selectedCountry?.name || ''}`,
+        },
+        {
+          display_name: "Phone",
+          variable_name: "phone",
+          value: `${selectedCountry ? '+' + selectedCountry.phonecode : ''}${formData.phone}`,
+        },
+      ],
+    },
+    publicKey,
+    text: "Pay Now",
+    onSuccess: (reference: { reference: string }) => {
+      handleOrderSuccess(reference.reference);
+    },
+    onClose: () => alert("Payment window closed"),
+  };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 15000;
@@ -59,8 +141,35 @@ const Payment = () => {
     return `₦${price.toLocaleString()}`;
   };
 
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.firstName.trim()) newErrors.firstName = 'This field is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'This field is required';
+    if (!formData.email.trim()) newErrors.email = 'This field is required';
+    if (!formData.address.trim()) newErrors.address = 'This field is required';
+    if (!formData.city.trim()) newErrors.city = 'This field is required';
+    if (!formData.state.trim()) newErrors.state = 'This field is required';
+    if (!formData.country.trim()) newErrors.country = 'This field is required';
+    if (!formData.phone.trim()) newErrors.phone = 'This field is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBlur = (field: string) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    validate();
+  };
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (touched[field]) validate();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched(requiredFields.reduce((acc, field) => ({ ...acc, [field]: true }), {}));
+    if (!validate()) return;
+    // ...proceed to next step or submit...
   };
 
   const steps = [
@@ -73,7 +182,6 @@ const Payment = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      
       <main className="pt-24 pb-16">
         <div className="max-w-6xl mx-auto px-6">
           {/* Step Indicator */}
@@ -107,169 +215,221 @@ const Payment = () => {
 
           <div className="grid lg:grid-cols-3 gap-16">
             {/* Payment Form */}
-            <div className="lg:col-span-2">
-              <div className="space-y-12">
-                {/* Billing Address */}
-                <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                  <h2 className="font-playfair text-2xl font-light mb-6">Billing Address</h2>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <Label htmlFor="firstName" className="font-inter text-sm font-medium">First Name</Label>
-                      <Input 
-                        id="firstName"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName" className="font-inter text-sm font-medium">Last Name</Label>
-                      <Input 
-                        id="lastName"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange('lastName', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <Label htmlFor="email" className="font-inter text-sm font-medium">Email</Label>
-                      <Input 
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <Label htmlFor="address" className="font-inter text-sm font-medium">Address</Label>
-                      <Input 
-                        id="address"
-                        value={formData.address}
-                        onChange={(e) => handleInputChange('address', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="city" className="font-inter text-sm font-medium">City</Label>
-                      <Input 
-                        id="city"
-                        value={formData.city}
-                        onChange={(e) => handleInputChange('city', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="state" className="font-inter text-sm font-medium">State</Label>
-                      <Input 
-                        id="state"
-                        value={formData.state}
-                        onChange={(e) => handleInputChange('state', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
+            {step !== 4 && (
+              <>
+                <div className="lg:col-span-2">
+                  <div className="space-y-12">
+                    {/* Shipping Details */}
+                    <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+                      <h2 className="font-playfair text-2xl font-light mb-6">Shipping Details</h2>
+                      <form onSubmit={handleSubmit}>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          {/* First Name */}
+                          <div>
+                            <Label htmlFor="firstName" className="font-inter text-sm font-medium">First Name</Label>
+                            <Input
+                              id="firstName"
+                              value={formData.firstName}
+                              onChange={(e) => handleInputChange('firstName', e.target.value)}
+                              onBlur={() => handleBlur('firstName')}
+                              className="mt-2 border-gray-200 focus:border-black"
+                            />
+                            {touched.firstName && errors.firstName && (
+                              <div className="text-red-500 text-xs mt-1">{errors.firstName}</div>
+                            )}
+                          </div>
+                          {/* Last Name */}
+                          <div>
+                            <Label htmlFor="lastName" className="font-inter text-sm font-medium">Last Name</Label>
+                            <Input
+                              id="lastName"
+                              value={formData.lastName}
+                              onChange={(e) => handleInputChange('lastName', e.target.value)}
+                              onBlur={() => handleBlur('lastName')}
+                              className="mt-2 border-gray-200 focus:border-black"
+                            />
+                            {touched.lastName && errors.lastName && (
+                              <div className="text-red-500 text-xs mt-1">{errors.lastName}</div>
+                            )}
+                          </div>
+                          {/* Email */}
+                          <div className="md:col-span-2">
+                            <Label htmlFor="email" className="font-inter text-sm font-medium">Email</Label>
+                            <Input
+                              id="email"
+                              type="email"
+                              value={formData.email}
+                              onChange={(e) => handleInputChange('email', e.target.value)}
+                              onBlur={() => handleBlur('email')}
+                              className="mt-2 border-gray-200 focus:border-black"
+                            />
+                            {touched.email && errors.email && (
+                              <div className="text-red-500 text-xs mt-1">{errors.email}</div>
+                            )}
+                          </div>
+                          {/* Country */}
+                          <div>
+                            <Label htmlFor="country" className="font-inter text-sm font-medium">Country</Label>
+                            <select
+                              id="country"
+                              value={formData.country}
+                              onChange={(e) => handleInputChange('country', e.target.value)}
+                              className={fieldClass}
+                            >
+                              <option value="">Select Country</option>
+                              {countries.map((country) => (
+                                <option key={country.isoCode} value={country.isoCode}>
+                                  {country.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          {/* State */}
+                          <div>
+                            <Label htmlFor="state" className="font-inter text-sm font-medium">State</Label>
+                            <select
+                              id="state"
+                              value={formData.state}
+                              onChange={(e) => handleInputChange('state', e.target.value)}
+                              className={fieldClass}
+                              disabled={!formData.country}
+                            >
+                              <option value="">Select State</option>
+                              {states.map((state) => (
+                                <option key={state.isoCode} value={state.name}>
+                                  {state.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          {/* Address */}
+                          <div className="md:col-span-2">
+                            <Label htmlFor="address" className="font-inter text-sm font-medium">Address</Label>
+                            <Input
+                              id="address"
+                              value={formData.address}
+                              onChange={(e) => handleInputChange('address', e.target.value)}
+                              onBlur={() => handleBlur('address')}
+                              className="mt-2 border-gray-200 focus:border-black"
+                            />
+                            {touched.address && errors.address && (
+                              <div className="text-red-500 text-xs mt-1">{errors.address}</div>
+                            )}
+                          </div>
+                          {/* City */}
+                          <div>
+                            <Label htmlFor="city" className="font-inter text-sm font-medium">City</Label>
+                            <Input
+                              id="city"
+                              value={formData.city}
+                              onChange={(e) => handleInputChange('city', e.target.value)}
+                              onBlur={() => handleBlur('city')}
+                              className="mt-2 border-gray-200 focus:border-black"
+                            />
+                            {touched.city && errors.city && (
+                              <div className="text-red-500 text-xs mt-1">{errors.city}</div>
+                            )}
+                          </div>
+                          {/* Phone with country code */}
+                          <div>
+                            <Label htmlFor="phone" className="font-inter text-sm font-medium">Phone Number</Label>
+                            <div className="relative">
+                              <span
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none font-inter"
+                                style={{ zIndex: 2 }}
+                              >
+                                +{selectedCountry?.phonecode || ''}
+                              </span>
+                              <Input
+                                id="phone"
+                                type="tel"
+                                value={formData.phone}
+                                onChange={e => handleInputChange('phone', e.target.value)}
+                                onBlur={() => handleBlur('phone')}
+                                className="mt-2 w-full border border-gray-200 focus:border-black rounded-md py-2 pl-12 pr-3 text-sm font-inter"
+                                placeholder="Enter phone number"
+                                style={{ boxSizing: 'border-box' }}
+                              />
+                            </div>
+                            {touched.phone && errors.phone && (
+                              <div className="text-red-500 text-xs mt-1">{errors.phone}</div>
+                            )}
+                          </div>
+                        </div>
+
+                        <Button type="submit" className="mt-6">Continue</Button>
+                      </form>
                     </div>
                   </div>
                 </div>
 
-                {/* Payment Information */}
-                <div className="animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                  <h2 className="font-playfair text-2xl font-light mb-6">Payment Information</h2>
-                  <div className="space-y-6">
-                    <div>
-                      <Label htmlFor="cardName" className="font-inter text-sm font-medium">Name on Card</Label>
-                      <Input 
-                        id="cardName"
-                        value={formData.cardName}
-                        onChange={(e) => handleInputChange('cardName', e.target.value)}
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
+                {/* Order Summary */}
+                <div className="lg:col-span-1">
+                  <div className="bg-gray-50 p-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+                    <h2 className="font-playfair text-2xl font-light mb-8">Order Summary</h2>
+                    
+                    <div className="space-y-4 mb-8">
+                      {cartItems.map(item => (
+                        <div key={item.id} className="flex justify-between font-inter text-sm">
+                          <span>{item.name} × {item.quantity}</span>
+                          <span>{formatPrice(item.price * item.quantity)}</span>
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <Label htmlFor="cardNumber" className="font-inter text-sm font-medium">Card Number</Label>
-                      <Input 
-                        id="cardNumber"
-                        value={formData.cardNumber}
-                        onChange={(e) => handleInputChange('cardNumber', e.target.value)}
-                        placeholder="1234 5678 9012 3456"
-                        className="mt-2 border-gray-200 focus:border-black"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="expiryDate" className="font-inter text-sm font-medium">Expiry Date</Label>
-                        <Input 
-                          id="expiryDate"
-                          value={formData.expiryDate}
-                          onChange={(e) => handleInputChange('expiryDate', e.target.value)}
-                          placeholder="MM/YY"
-                          className="mt-2 border-gray-200 focus:border-black"
-                        />
+
+                    <div className="space-y-4 mb-8 border-t border-gray-200 pt-4">
+                      <div className="flex justify-between font-inter">
+                        <span>Subtotal</span>
+                        <span>{formatPrice(subtotal)}</span>
                       </div>
-                      <div>
-                        <Label htmlFor="cvv" className="font-inter text-sm font-medium">CVV</Label>
-                        <Input 
-                          id="cvv"
-                          value={formData.cvv}
-                          onChange={(e) => handleInputChange('cvv', e.target.value)}
-                          placeholder="123"
-                          className="mt-2 border-gray-200 focus:border-black"
-                        />
+                      <div className="flex justify-between font-inter">
+                        <span>Shipping</span>
+                        <span>{formatPrice(shipping)}</span>
+                      </div>
+                      <div className="border-t border-gray-200 pt-4">
+                        <div className="flex justify-between font-inter text-lg font-medium">
+                          <span>Total</span>
+                          <span>{formatPrice(total)}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-gray-50 p-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                <h2 className="font-playfair text-2xl font-light mb-8">Order Summary</h2>
-                
-                <div className="space-y-4 mb-8">
-                  {cartItems.map(item => (
-                    <div key={item.id} className="flex justify-between font-inter text-sm">
-                      <span>{item.name} × {item.quantity}</span>
-                      <span>{formatPrice(item.price * item.quantity)}</span>
-                    </div>
-                  ))}
-                </div>
+                    {/* Only render PaystackButton if form is valid */}
+                    {isFormValid ? (
+                      <PaystackButton {...componentProps} className="w-full bg-black text-white hover:bg-gray-800 py-4 text-lg" disabled={loading} />
+                    ) : (
+                      <Button disabled className="w-full bg-gray-300 text-gray-500 py-4 text-lg cursor-not-allowed">
+                        Pay Now
+                      </Button>
+                    )}
 
-                <div className="space-y-4 mb-8 border-t border-gray-200 pt-4">
-                  <div className="flex justify-between font-inter">
-                    <span>Subtotal</span>
-                    <span>{formatPrice(subtotal)}</span>
-                  </div>
-                  <div className="flex justify-between font-inter">
-                    <span>Shipping</span>
-                    <span>{formatPrice(shipping)}</span>
-                  </div>
-                  <div className="border-t border-gray-200 pt-4">
-                    <div className="flex justify-between font-inter text-lg font-medium">
-                      <span>Total</span>
-                      <span>{formatPrice(total)}</span>
+                    <div className="mt-6 text-center">
+                      <Link to="/cart" className="font-inter text-sm text-gray-600 hover:text-black transition-colors">
+                        ← Back to Cart
+                      </Link>
                     </div>
                   </div>
                 </div>
+              </>
+            )}
 
-                <Button className="w-full bg-black text-white hover:bg-gray-800 py-4 text-lg">
-                  Complete Purchase
-                </Button>
-
-                <div className="mt-6 text-center">
-                  <Link to="/cart" className="font-inter text-sm text-gray-600 hover:text-black transition-colors">
-                    ← Back to Cart
-                  </Link>
-                </div>
+            {/* Done Step */}
+            {step === 4 && paymentSuccess && (
+              <div className="col-span-3 text-center py-16">
+                <h2 className="text-3xl font-playfair mb-4">Thank you for your purchase!</h2>
+                <p className="text-lg">Your payment was successful and your order has been received.</p>
+                <Link to="/" className="mt-8 inline-block bg-black text-white px-6 py-3 rounded">
+                  Go to Home
+                </Link>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
 };
 
 export default Payment;
+

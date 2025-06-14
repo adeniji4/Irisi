@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios'
 import {toast} from 'react-toastify'
@@ -21,6 +20,7 @@ interface CartContextType {
   updateQuantity: (id: number, size: string, quantity: number) => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  clearCart: () => void;
 }
 
 // product type based on backend model
@@ -43,7 +43,7 @@ interface ProductListResponse {
   products: Product[];
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const useCart = () => {
   const context = useContext(CartContext);
@@ -61,6 +61,19 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const backendUrl: string = import.meta.env.VITE_BACKEND_URL as string;
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage whenever cartItems changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const getProductsData = async (
     setProducts: React.Dispatch<React.SetStateAction<Product[]>>,
@@ -130,6 +143,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  };
+
   return (
     <CartContext.Provider value={{
       products,
@@ -138,7 +156,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       removeFromCart,
       updateQuantity,
       getTotalItems,
-      getTotalPrice
+      getTotalPrice,
+      clearCart
     }}>
       {children}
     </CartContext.Provider>
