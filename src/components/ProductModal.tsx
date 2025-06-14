@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogClose } from './ui/dialog';
 import { Button } from './ui/button';
 import { X } from 'lucide-react';
@@ -11,6 +11,7 @@ interface Product {
   price: number;
   description: string;
   fabric?: string;
+  sizes: string[];
 }
 
 interface ProductModalProps {
@@ -26,7 +27,8 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
 
   if (!product) return null;
 
-  const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+  const sizes = product.sizes || ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   const quantities = [1, 2, 3, 4, 5];
 
   const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
@@ -35,6 +37,8 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
     onAddToCart(product, selectedSize, quantity);
     onClose();
   };
+
+ 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -1,96 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductModal from './ProductModal';
 import { Button } from './ui/button';
 import { useCart } from '../contexts/CartContext';
 
 const NewestDesigns = () => {
+  const [latestProducts, setLatestProduct] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addToCart } = useCart();
+  const { addToCart, products } = useCart();
 
-  const newestProducts = [
-    {
-      id: 101,
-      name: 'Midnight Elegance',
-      image: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 520000,
-      description: 'Sophisticated evening wear with contemporary African motifs.',
-      fabric: 'Silk'
-    },
-    {
-      id: 102,
-      name: 'Heritage Modern',
-      image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 380000,
-      description: 'Traditional craftsmanship meets modern silhouette.',
-      fabric: 'Cotton'
-    },
-    {
-      id: 103,
-      name: 'Royal Sunset',
-      image: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 450000,
-      description: 'Luxurious fabric with hand-embroidered details.',
-      fabric: 'Ankara'
-    },
-    {
-      id: 104,
-      name: 'Urban Aristocrat',
-      image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 340000,
-      description: 'Contemporary urban style with cultural essence.',
-      fabric: 'Wool'
-    },
-    {
-      id: 105,
-      name: 'Ceremonial Grace',
-      image: 'https://images.unsplash.com/photo-1721322800607-8c38375eef04?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 480000,
-      description: 'Elegant ceremonial wear for special occasions.',
-      fabric: 'Silk'
-    },
-    {
-      id: 106,
-      name: 'Dynasty Collection',
-      image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 420000,
-      description: 'Regal design inspired by ancient African royalty.',
-      fabric: 'Cotton'
-    },
-    {
-      id: 107,
-      name: 'Modern Majesty',
-      image: 'https://images.unsplash.com/photo-1582562124811-c09040d0a901?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 360000,
-      description: 'Contemporary luxury with traditional influence.',
-      fabric: 'Ankara'
-    },
-    {
-      id: 108,
-      name: 'Cultural Fusion',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 390000,
-      description: 'East meets West in this stunning design.',
-      fabric: 'Wool'
-    },
-    {
-      id: 109,
-      name: 'Executive Elite',
-      image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 550000,
-      description: 'Premium business attire with cultural elements.',
-      fabric: 'Silk'
-    },
-    {
-      id: 110,
-      name: 'Evening Sovereign',
-      image: 'https://images.unsplash.com/photo-1492321936769-b49830bc1d1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-      price: 580000,
-      description: 'Luxury evening wear with intricate beadwork.',
-      fabric: 'Ankara'
-    }
-  ];
+
+  useEffect(() => {
+    setLatestProduct([...products].reverse().slice(0, 10));
+  }, [products])
+
+  
+  
 
   const formatPrice = (price) => `₦${price.toLocaleString()}`;
 
@@ -101,11 +27,11 @@ const NewestDesigns = () => {
 
   const handleAddToCart = (product) => {
     addToCart({
-      id: product.id,
+      id: product._id,
       name: product.name,
       image: product.image,
       fabric: product.fabric,
-      size: 'M', // Default size
+      size: product.sizes?.[0] || 'M',
       price: product.price
     });
   };
@@ -139,9 +65,9 @@ const NewestDesigns = () => {
 
           {/* Responsive Grid - Mobile: 2 columns, Tablet: 3 columns, Desktop: 4-5 columns */}
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
-            {newestProducts.map((product, index) => (
+            {latestProducts.map((product, index) => (
               <div 
-                key={product.id} 
+                key={product._id} 
                 className="product-card group animate-fade-in-up transition-all duration-300 ease-in-out hover:shadow-[0px_8px_16px_rgba(0,0,0,0.2)] max-w-sm mx-auto w-full"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
