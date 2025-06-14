@@ -1,5 +1,7 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import axios, { AxiosResponse } from 'axios'
+import {toast} from 'react-toastify'
 
 interface CartItem {
   id: number;
@@ -12,12 +14,33 @@ interface CartItem {
 }
 
 interface CartContextType {
+  products: Product[];
   cartItems: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
   removeFromCart: (id: number, size: string) => void;
   updateQuantity: (id: number, size: string, quantity: number) => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+}
+
+// product type based on backend model
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  type: string;
+  fabric: string;
+  image: string;
+  imagePublicId: string;
+}
+
+// Define the response type expected from your backend
+interface ProductListResponse {
+  success: boolean;
+  message?: string;
+  products: Product[];
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -36,6 +59,33 @@ interface CartProviderProps {
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const backendUrl: string = import.meta.env.VITE_BACKEND_URL as string;
+
+  const getProductsData = async (
+    setProducts: React.Dispatch<React.SetStateAction<Product[]>>,
+    backendUrl: string
+  ): Promise<void> => {
+    try {
+      const response: AxiosResponse<ProductListResponse> = await axios.get(
+        `${backendUrl}/api/product/list`
+      );
+
+      if (response.data.success) {
+        setProducts(response.data.products);
+        console.log(response.data)
+      } else {
+        toast.error(response.data.message || 'Failed to load products');
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || 'An error occurred');
+    }
+  };
+
+  useEffect(() => {
+    getProductsData(setProducts, backendUrl)
+  }, [])
 
   const addToCart = (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
     setCartItems(prevItems => {
@@ -82,6 +132,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   return (
     <CartContext.Provider value={{
+      products,
       cartItems,
       addToCart,
       removeFromCart,
