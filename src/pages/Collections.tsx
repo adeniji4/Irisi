@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import ProductModal from '../components/ProductModal';
 import { Button } from '../components/ui/button';
 import { useCart } from '../contexts/CartContext';
+import WhatsAppCTA from '../components/WhatsAppCTA';
 
 const Collections = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
@@ -89,11 +90,14 @@ const Collections = () => {
           </div>
           
           <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
+            <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl font-light mb-8 animate-fade-in-up"  style={{color: '#ff6600'}}>
+              Ìrísí
+            </h1>
             <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl font-light mb-8 animate-fade-in-up">
-              Our Signature Collection
+               Collection
             </h1>
             <p className="font-inter text-xl md:text-2xl font-light leading-relaxed animate-fade-in-up" style={{animationDelay: '0.3s'}}>
-              Discover luxury Nigerian fashion pieces crafted with meticulous attention to detail
+              Explore our curated collection of luxury Fila and handcrafted wedding beads. <br></br> where tradition meets timeless elegance.
             </p>
             <div className="w-32 h-px bg-white mx-auto mt-12 animate-fade-in-up" style={{animationDelay: '0.6s'}}></div>
           </div>
@@ -130,7 +134,7 @@ const Collections = () => {
                   className="group animate-fade-in-up"
                   style={{animationDelay: `${index * 0.1}s`}}
                 >
-                  <div className="relative overflow-hidden bg-gray-100 aspect-[3/4] mb-4">
+                  <div className="relative overflow-hidden bg-gray-100 aspect-[3/4] mb-4" >
                     <img
                       src={product.image}
                       alt={product.name}
@@ -146,18 +150,18 @@ const Collections = () => {
                     
                     {/* Action Buttons */}
                     <div className="flex gap-2 justify-center pt-2">
-                      <Button
+                      <Button 
                         onClick={() => handleViewProduct(product)}
                         variant="outline"
                         size="sm"
-                        className="font-inter text-xs tracking-wider border-black text-black hover:bg-black hover:text-white transition-all duration-300"
+                        className="font-inter text-xs tracking-wider border-black text-black hover:bg-black hover:text-white transition-all duration-300" 
                       >
                         VIEW
                       </Button>
                       <Button
                         onClick={() => handleAddToCart(product)}
                         size="sm"
-                        className="font-inter text-xs tracking-wider bg-black text-white hover:bg-gray-800 transition-all duration-300"
+                        className="font-inter text-xs tracking-wider bg-[#ff6600] text-white hover:bg-gray-800 transition-all duration-300" 
                       >
                         ADD TO CART
                       </Button>
@@ -170,6 +174,7 @@ const Collections = () => {
         </section>
 
         <Footer />
+        <WhatsAppCTA />
       </div>
 
       <ProductModal 

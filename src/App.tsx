@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,7 @@ import MouseShadow from "./components/MouseShadow";
 import Index from "./pages/Index";
 import Collections from "./pages/Collections";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Contact from "./pages/Contact.tsx";
 import Cart from "./pages/Cart";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";

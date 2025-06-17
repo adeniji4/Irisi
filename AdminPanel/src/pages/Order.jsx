@@ -60,7 +60,7 @@ const Order = () => {
             {/* Billing Address */}
             {order.customer && (
               <div className="mb-2 text-sm text-gray-700">
-                <div><strong>Billing Address:</strong></div>
+                <div><strong>Shipping Address:</strong></div>
                 <div>{order.customer.firstName} {order.customer.lastName}</div>
                 <div>{order.customer.address}</div>
                 <div>{order.customer.city}, {order.customer.state}, {order.customer.country}</div>

@@ -29,9 +29,9 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className={`font-playfair text-2xl font-bold tracking-wide hover:opacity-70 transition-all duration-300 ${
-            isScrolled ? 'text-black' : 'text-white drop-shadow-lg'
+            isScrolled ? 'text-[#ff6600]' : 'text-white drop-shadow-lg'
           }`}>
-            ClothingbyDan
+            Ìrísí
           </Link>
 
           {/* Desktop Navigation */}
@@ -40,7 +40,7 @@ const Navigation = () => {
               to="/" 
               className={`font-inter text-sm tracking-wider transition-all duration-300 ${
                 isScrolled 
-                  ? (isActive('/') ? 'text-black border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
+                  ? (isActive('/') ? 'text-[#ff6600] border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
                   : (isActive('/') ? 'text-white border-b border-white pb-1' : 'text-white/80 hover:text-white drop-shadow-lg')
               }`}
             >
@@ -50,7 +50,7 @@ const Navigation = () => {
               to="/collections" 
               className={`font-inter text-sm tracking-wider transition-all duration-300 ${
                 isScrolled 
-                  ? (isActive('/collections') ? 'text-black border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
+                  ? (isActive('/collections') ? 'text-[#ff6600] border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
                   : (isActive('/collections') ? 'text-white border-b border-white pb-1' : 'text-white/80 hover:text-white drop-shadow-lg')
               }`}
             >
@@ -60,7 +60,7 @@ const Navigation = () => {
               to="/about" 
               className={`font-inter text-sm tracking-wider transition-all duration-300 ${
                 isScrolled 
-                  ? (isActive('/about') ? 'text-black border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
+                  ? (isActive('/about') ? 'text-[#ff6600] border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
                   : (isActive('/about') ? 'text-white border-b border-white pb-1' : 'text-white/80 hover:text-white drop-shadow-lg')
               }`}
             >
@@ -70,7 +70,7 @@ const Navigation = () => {
               to="/contact" 
               className={`font-inter text-sm tracking-wider transition-all duration-300 ${
                 isScrolled 
-                  ? (isActive('/contact') ? 'text-black border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
+                  ? (isActive('/contact') ? 'text-[#ff6600] border-b border-black pb-1' : 'text-gray-700 hover:text-black') 
                   : (isActive('/contact') ? 'text-white border-b border-white pb-1' : 'text-white/80 hover:text-white drop-shadow-lg')
               }`}
             >

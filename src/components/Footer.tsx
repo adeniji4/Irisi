@@ -17,14 +17,14 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="font-playfair text-3xl font-bold mb-6">ClothingbyDan</div>
+            <div className="font-playfair text-3xl font-bold mb-6" style={{ color: '#ff6600' }}>Ìrísí</div>
             <p className="font-inter text-gray-600 leading-relaxed max-w-md mb-8">
               Luxury Nigerian fashion that celebrates heritage while embracing contemporary elegance. Crafted with passion, worn with pride.
             </p>
             
             {/* Newsletter Signup */}
             <div>
-              <h4 className="font-inter text-sm tracking-wider font-medium mb-4 uppercase">Stay Updated</h4>
+              <h4 className="font-inter text-sm tracking-wider font-medium mb-4 uppercase" style={{ color: '#ff6600' }}>Stay Updated</h4>
               <form onSubmit={handleNewsletterSubmit} className="flex">
                 <input
                   type="email"
@@ -36,7 +36,7 @@ const Footer = () => {
                 />
                 <button 
                   type="submit"
-                  className="ml-4 font-inter text-sm tracking-wider hover:opacity-70 transition-opacity border-b border-gray-300 pb-3"
+                  className="ml-4 font-inter text-sm tracking-wider hover:opacity-70 transition-opacity border-b border-gray-300 pb-3" style={{ color: '#ff6600' }}
                 >
                   SUBSCRIBE
                 </button>
@@ -46,7 +46,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-inter text-sm tracking-wider font-medium mb-6 uppercase">Quick Links</h4>
+            <h4 className="font-inter text-sm tracking-wider font-medium mb-6 uppercase" style={{ color: '#ff6600' }}>Quick Links</h4>
             <ul className="space-y-4">
               <li><a href="/" className="font-inter text-gray-600 hover:text-gray-900 transition-colors">Home</a></li>
               <li><a href="/collections" className="font-inter text-gray-600 hover:text-gray-900 transition-colors">Collections</a></li>
@@ -57,11 +57,11 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-inter text-sm tracking-wider font-medium mb-6 uppercase">Contact</h4>
+            <h4 className="font-inter text-sm tracking-wider font-medium mb-6 uppercase" style={{ color: '#ff6600' }}>Contact</h4>
             <ul className="space-y-4 font-inter text-gray-600">
               <li>Lagos, Nigeria</li>
               <li>+234 (0) 123 456 7890</li>
-              <li>hello@clothingbydan.com</li>
+              <li>irisiclothing@gmail.com</li>
             </ul>
           </div>
         </div>
@@ -86,7 +86,7 @@ const Footer = () => {
             </a>
           </div>
           <p className="font-inter text-sm text-gray-500">
-            © 2024 ClothingbyDan. All rights reserved.
+            © 2025 Ìrísí. All rights reserved.
           </p>
         </div>
       </div>

@@ -16,11 +16,11 @@ const InstagramGrid = () => {
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-playfair text-3xl md:text-4xl font-light mb-6 animate-fade-in-up">
+          <h2 className="font-playfair text-3xl md:text-4xl font-light mb-6 animate-fade-in-up" style={{color: '#ff6600'}}>
             Follow Our Journey
           </h2>
           <p className="font-inter text-gray-600 mb-8 animate-fade-in">
-            @clothbydan
+            @irisi_omoluabi
           </p>
           <a 
             href="https://instagram.com/clothbydan" 

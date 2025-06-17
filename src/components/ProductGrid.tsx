@@ -98,10 +98,10 @@ const ProductGrid = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div>
-            <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up">
+            <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up " >
               Our Collections
             </h2>
-            <p className="font-inter text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <p className="font-inter text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s',}}>
               Discover our curated selection of premium Nigerian fashion pieces, each crafted with meticulous attention to detail and cultural heritage.
             </p>
           </div>

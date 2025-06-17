@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const CTABanner = () => {
   return (
-    <section className="py-32 bg-black relative overflow-hidden">
+    <section className="py-32 bg-[#ff6600] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border border-white rotate-45"></div>
@@ -31,7 +31,7 @@ const CTABanner = () => {
             className="group relative font-inter text-sm tracking-[0.2em] bg-white text-black px-12 py-4 hover:bg-transparent hover:text-white border border-white transition-all duration-700 overflow-hidden"
           >
             <span className="relative z-10 group-hover:tracking-[0.3em] transition-all duration-500">
-              ORDER CUSTOM LOOKS
+              CUSTOM ORDER 
             </span>
           </Link>
           
@@ -43,14 +43,14 @@ const CTABanner = () => {
           </Link>
         </div>
 
-        <div className="mt-20 flex items-center justify-center space-x-16 text-white/60 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+        <div className="mt-20 flex items-center justify-center space-x-16 text-white animate-fade-in-up" style={{animationDelay: '0.6s'}}>
           <div className="text-center">
             <div className="font-playfair text-2xl font-light mb-2">24/7</div>
             <div className="font-inter text-sm tracking-wider uppercase">Support</div>
           </div>
           <div className="w-px h-12 bg-white/20"></div>
           <div className="text-center">
-            <div className="font-playfair text-2xl font-light mb-2">2-4 Weeks</div>
+            <div className="font-playfair text-2xl font-light mb-2">1+ Week</div>
             <div className="font-inter text-sm tracking-wider uppercase">Custom Orders</div>
           </div>
           <div className="w-px h-12 bg-white/20"></div>

@@ -1,10 +1,37 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import WhatsAppCTA from '../components/WhatsAppCTA';
 
 const Contact = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const name = `${firstName} ${lastName}`.trim();
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert('Message sent!');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setSubject('');
+      setMessage('');
+    } else {
+      alert('Failed to send message');
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -12,11 +39,11 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-light mb-8 animate-fade-in-up">
+          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-light mb-8 animate-fade-in-up" style={{ color: '#ff6600' }}>
             Get In Touch
           </h1>
           <p className="font-inter text-lg text-gray-600 max-w-2xl mx-auto animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            Ready to create something extraordinary? Let's discuss your vision.
+            Whether it’s for a wedding, ceremony, personal style, or bulk order <br></br>Ìrísí is ready to craft your perfect custom Fila.
           </p>
         </div>
       </section>
@@ -27,14 +54,16 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2 gap-20">
             {/* Contact Form */}
             <div className="animate-fade-in-up">
-              <h2 className="font-playfair text-3xl font-light mb-8">Send Us a Message</h2>
-              <form className="space-y-6">
+              <h2 className="font-playfair text-3xl font-light mb-8" style={{ color: '#ff6600' }}>Send Us a Message</h2>
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <input
                       type="text"
                       placeholder="First Name"
                       className="w-full px-0 py-4 border-0 border-b border-gray-300 bg-transparent focus:border-black focus:outline-none font-inter"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                   </div>
                   <div>
@@ -42,6 +71,8 @@ const Contact = () => {
                       type="text"
                       placeholder="Last Name"
                       className="w-full px-0 py-4 border-0 border-b border-gray-300 bg-transparent focus:border-black focus:outline-none font-inter"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -50,6 +81,8 @@ const Contact = () => {
                     type="email"
                     placeholder="Email Address"
                     className="w-full px-0 py-4 border-0 border-b border-gray-300 bg-transparent focus:border-black focus:outline-none font-inter"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
@@ -57,6 +90,8 @@ const Contact = () => {
                     type="text"
                     placeholder="Subject"
                     className="w-full px-0 py-4 border-0 border-b border-gray-300 bg-transparent focus:border-black focus:outline-none font-inter"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
                   />
                 </div>
                 <div>
@@ -64,6 +99,8 @@ const Contact = () => {
                     rows={6}
                     placeholder="Message"
                     className="w-full px-0 py-4 border-0 border-b border-gray-300 bg-transparent focus:border-black focus:outline-none font-inter resize-none"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
                 </div>
                 <button
@@ -78,13 +115,13 @@ const Contact = () => {
             {/* Contact Information */}
             <div className="space-y-12 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
               <div>
-                <h2 className="font-playfair text-3xl font-light mb-8">Contact Information</h2>
+                <h2 className="font-playfair text-3xl font-light mb-8" style={{ color: '#ff6600' }}>Contact Information</h2>
                 
                 <div className="space-y-8">
                   <div className="flex items-start space-x-4">
                     <MapPin size={20} className="mt-1 text-gray-600" />
                     <div>
-                      <div className="font-inter font-medium mb-1">Studio Address</div>
+                      <div className="font-inter font-medium mb-1" >Studio Address</div>
                       <div className="font-inter text-gray-600">
                         123 Victoria Island<br />
                         Lagos, Nigeria
@@ -111,7 +148,7 @@ const Contact = () => {
               </div>
 
               <div>
-                <h3 className="font-playfair text-2xl font-light mb-6">Studio Hours</h3>
+                <h3 className="font-playfair text-2xl font-light mb-6" style={{ color: '#ff6600' }}>Studio Hours</h3>
                 <div className="space-y-2 font-inter text-gray-600">
                   <div className="flex justify-between">
                     <span>Monday - Friday</span>
@@ -133,6 +170,7 @@ const Contact = () => {
       </section>
 
       <Footer />
+      <WhatsAppCTA />
     </div>
   );
 };

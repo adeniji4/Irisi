@@ -147,10 +147,10 @@ const Gallery = () => {
         <div className="max-w-full px-6">
           <div className="text-center mb-20">
             <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div>
-            <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up">
+            <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up"  style={{color: '#ff6600'}}>
               Our Collections
             </h2>
-            <p className="font-inter text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <p className="font-inter text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{animationDelay: '0.2s', }}>
               Discover our curated selection of premium Nigerian fashion pieces, each crafted with exceptional attention to detail and contemporary style.
             </p>
           </div>
@@ -230,7 +230,7 @@ const Gallery = () => {
                             handleAddToCart(item);
                           }}
                           size="sm"
-                          className="font-inter text-xs tracking-wider bg-white text-black hover:bg-gray-100 transition-all duration-300"
+                          className="font-inter text-xs tracking-wider bg-[#ff6600] text-black hover:bg-gray-100 transition-all duration-300"
                         >
                           ADD TO CART
                         </Button>

@@ -8,17 +8,17 @@ const IntroStatement = () => {
     {
       title: "Fashion is the armor to survive",
       subtitle: "the reality of everyday life",
-      description: "At ClothByDan, we believe that true luxury lies not just in the finest materials or impeccable craftsmanship, but in the stories we tell and the heritage we honor through every stitch.",
+      description: "At Ìrísí, we believe true luxury isn’t just found in fine materials or expert craftsmanship, it's woven into the stories we tell and the heritage we honor with every stitch.",
       stats: [
-        { number: "15+", label: "Years Experience" },
+        { number: "10+", label: "Years Experience" },
         { number: "500+", label: "Pieces Created" },
-        { number: "50+", label: "Countries Reached" }
+        { number: "5+", label: "Countries Reached" }
       ]
     },
     {
       title: "Tradition meets",
       subtitle: "contemporary innovation",
-      description: "Every thread tells a story of cultural heritage reimagined for the modern world. Our designs bridge the gap between ancestral artistry and contemporary luxury fashion.",
+      description: "Each Ìrísí piece is more than a cap, it’s a crown of identity, culture, and timeless elegance, crafted to preserve the legacy of African tradition with modern grace.",
       stats: [
         { number: "100%", label: "Handcrafted" },
         { number: "24/7", label: "Design Process" },
@@ -28,10 +28,10 @@ const IntroStatement = () => {
     {
       title: "Excellence in",
       subtitle: "every detail",
-      description: "From the first sketch to the final stitch, our commitment to excellence ensures that each piece becomes a timeless work of art, worthy of the most discerning clientele.",
+      description: "From thread to form, Ìrísí is where heritage is sculpted into style bridging generations through design that speaks without words.",
       stats: [
-        { number: "72h", label: "Quality Check" },
-        { number: "1000+", label: "Hours Per Piece" },
+        { number: "∞", label: "Quality Check" },
+        { number: "5+", label: "Hours Per Piece" },
         { number: "5★", label: "Client Rating" }
       ]
     }
@@ -53,7 +53,7 @@ const IntroStatement = () => {
       <div className="max-w-7xl mx-auto px-6 text-center relative">
         <div className="mb-8 animate-fade-in-up">
           <div className="w-32 h-px bg-gray-300 mx-auto mb-6"></div>
-          <p className="font-inter text-sm tracking-[0.3em] text-gray-500 uppercase">Philosophy</p>
+          <p className="font-inter text-sm tracking-[0.3em] text-gray-500 uppercase" >Philosophy</p>
         </div>
         
         <div className="relative min-h-[350px] flex items-center justify-center mb-12">
@@ -68,7 +68,7 @@ const IntroStatement = () => {
             >
               <h2 className="font-playfair text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] text-gray-900 mb-6">
                 {philosophy.title}<br />
-                <span className="italic font-normal text-gray-600">{philosophy.subtitle}</span>
+                <span className="italic font-normal text-gray-600" style={{ color: '#ff6600' }}>{philosophy.subtitle}</span>
               </h2>
               
               <div className="max-w-4xl mx-auto">
@@ -76,11 +76,11 @@ const IntroStatement = () => {
                   {philosophy.description}
                 </p>
                 
-                <div className="flex items-center justify-center space-x-8">
+                <div className="flex items-center justify-center space-x-8" >
                   {philosophy.stats.map((stat, statIndex) => (
                     <React.Fragment key={statIndex}>
                       <div className="text-center">
-                        <div className="font-playfair text-3xl font-light text-gray-900 mb-2">{stat.number}</div>
+                        <div className="font-playfair text-3xl font-light text-gray-900 mb-2" style={{ color: '#ff6600' }}>{stat.number}</div>
                         <div className="font-inter text-sm tracking-wider text-gray-500 uppercase">{stat.label}</div>
                       </div>
                       {statIndex < philosophy.stats.length - 1 && (

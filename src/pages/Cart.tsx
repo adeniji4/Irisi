@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { Minus, Plus, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import WhatsAppCTA from '../components/WhatsAppCTA';
 
 const Cart = () => {
   const { cartItems, updateQuantity, removeFromCart, getTotalPrice } = useCart();
@@ -133,6 +134,7 @@ const Cart = () => {
       </main>
 
       <Footer />
+      <WhatsAppCTA />
     </div>
   );
 };

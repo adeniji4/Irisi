@@ -1,4 +1,3 @@
-
 import { ToastContainer} from 'react-toastify';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -9,6 +8,7 @@ import Add from './pages/Add';
 import List from './pages/List';
 import Order from './pages/Order';
 import UpdateProduct from './components/UpdateProduct';
+import ContactMessages from './pages/ContactMessages';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
 export const currency = '₦'
@@ -40,6 +40,7 @@ function App() {
               <Route path='/list' element={<List token={token}/>}/>
               <Route path='/order' element={<Order token={token}/>}/>
               <Route path='/update/:id' element={<UpdateProduct token={token}/>}/>
+              <Route path='/contact-messages' element={<ContactMessages />} />
             </Routes>
           </div>
         </div>

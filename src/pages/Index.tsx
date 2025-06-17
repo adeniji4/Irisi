@@ -12,6 +12,7 @@ import FAQ from '../components/FAQ';
 import CTABanner from '../components/CTABanner';
 import InstagramGrid from '../components/InstagramGrid';
 import Footer from '../components/Footer';
+import WhatsAppCTA from '../components/WhatsAppCTA';
 
 const Index = () => {
   return (
@@ -28,6 +29,7 @@ const Index = () => {
       <CTABanner />
       <InstagramGrid />
       <Footer />
+      <WhatsAppCTA />
     </div>
   );
 };

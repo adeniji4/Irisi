@@ -6,17 +6,17 @@ const Testimonials = () => {
 
   const testimonials = [
     {
-      quote: "ClothByDan created the most stunning piece for my wedding. The attention to detail and craftsmanship is unparalleled. I felt like royalty.",
+      quote: "Ìrísí crafted the most stunning cap for my wedding. The attention to detail and artistry was unmatched, I truly felt like royalty.",
       author: "Adunni Adebayo",
       role: "Bride & Fashion Enthusiast"
     },
     {
-      quote: "Working with Dan was a dream. He understood my vision perfectly and created a collection that honored my heritage while keeping me on-trend.",
+      quote: "Ìrísí brought my vision to life with such care and precision. The collection honored my heritage while keeping every detail stylish and on trend.",
       author: "Temi Ogundimu",
       role: "Celebrity & Actress"
     },
     {
-      quote: "The quality is exceptional. Every stitch tells a story, and wearing ClothByDan makes me feel connected to my roots in the most elegant way.",
+      quote: "The quality is exceptional. Every stitch tells a story, and wearing Ìrísí makes me feel deeply connected to my roots in the most elegant way.",
       author: "Kemi Williams",
       role: "Art Curator"
     }
@@ -32,7 +32,7 @@ const Testimonials = () => {
   return (
     <section className="py-32 bg-white">
       <div className="max-w-4xl mx-auto px-6 text-center">
-        <h2 className="font-playfair text-4xl md:text-5xl font-light mb-20 animate-fade-in-up">
+        <h2 className="font-playfair text-4xl md:text-5xl font-light mb-20 animate-fade-in-up" style={{color: '#ff6600'}}>
           Client Stories
         </h2>
 
@@ -51,10 +51,10 @@ const Testimonials = () => {
               </blockquote>
               
               <div className="space-y-2">
-                <div className="font-inter text-sm tracking-wider font-medium text-gray-900">
+                <div className="font-inter text-sm tracking-wider font-medium text-gray-900" style={{color: '#ff6600'}}>
                   {testimonial.author}
                 </div>
-                <div className="font-inter text-xs tracking-wider text-gray-500 uppercase">
+                <div className="font-inter text-xs tracking-wider text-gray-500 uppercase" style={{color: '#ff6600'}}>
                   {testimonial.role}
                 </div>
               </div>

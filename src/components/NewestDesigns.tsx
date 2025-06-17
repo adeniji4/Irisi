@@ -55,7 +55,7 @@ const NewestDesigns = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div>
-            <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-light mb-6 animate-fade-in-up">
+            <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-light mb-6 animate-fade-in-up" style={{ color: '#ff6600' }}>
               Our Newest Designs
             </h2>
             <p className="font-inter text-gray-600 max-w-2xl mx-auto leading-relaxed animate-fade-in-up px-4" style={{animationDelay: '0.2s'}}>
@@ -101,7 +101,7 @@ const NewestDesigns = () => {
                   <Button
                     onClick={() => handleAddToCart(product)}
                     size="sm"
-                    className="w-full mt-1 sm:mt-2 font-inter text-xs tracking-wider bg-black text-white hover:bg-gray-800 transition-all duration-300 h-7 sm:h-8 md:h-9 px-2"
+                    className="w-full mt-1 sm:mt-2 font-inter text-xs tracking-wider bg-[#ff6600]/80 text-white hover:bg-gray-800 transition-all duration-300 h-7 sm:h-8 md:h-9 px-2"
                   >
                     ADD TO CART
                   </Button>
