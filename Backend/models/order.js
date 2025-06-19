@@ -1,12 +1,24 @@
 // filepath: /Users/adeniji/Desktop/dan-milano-elegance-main/Backend/models/order.js
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema({
-  cartItems: { type: Array, required: true },
-  customer: { type: Object, required: true },
-  paymentReference: { type: String, required: true }
-}, { timestamps: true });
+const cartItemSchema = new mongoose.Schema({
+  name: String,
+  price: Number,
+  quantity: Number,
+  size: String, // <-- add this
+  image: String, // <-- add this
+});
 
-const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
+const orderSchema = new mongoose.Schema(
+  {
+    cartItems: [cartItemSchema],
+    customer: Object,
+    paymentReference: String,
+    // ...other fields as needed
+  },
+  { timestamps: true }
+);
 
-export default Order;
+const Order = mongoose.model('Order', orderSchema);
+
+export default Order

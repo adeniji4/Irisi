@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Country, State } from 'country-state-city';
 import Navigation from '../components/Navigation';
@@ -53,7 +53,7 @@ const Payment = () => {
   const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, clearCart, addToCart } = useCart();
 
   // Country/State logic
   const countries = Country.getAllCountries();
@@ -96,6 +96,8 @@ const Payment = () => {
       setStep(4);
       setPaymentSuccess(true);
       setFormData(initialFormData);
+      // Set flag in localStorage
+      localStorage.setItem('paymentSuccess', 'true');
     } catch (error) {
       alert('Order update failed. Please contact support.');
     } finally {
@@ -178,6 +180,24 @@ const Payment = () => {
     { number: 3, label: 'Payment', completed: false },
     { number: 4, label: 'Done', completed: false }
   ];
+
+  useEffect(() => {
+    if (cartItems.length > 0 && step !== 4) {
+      localStorage.removeItem('paymentSuccess');
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem('paymentSuccess') === 'true' &&
+      cartItems.length === 0
+    ) {
+      setStep(4);
+      setPaymentSuccess(true);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -370,8 +390,25 @@ const Payment = () => {
                     
                     <div className="space-y-4 mb-8">
                       {cartItems.map(item => (
-                        <div key={item.id} className="flex justify-between font-inter text-sm">
-                          <span>{item.name} × {item.quantity}</span>
+                        <div key={item.id} className="flex items-center justify-between font-inter text-sm">
+                          <div className="flex items-center">
+                            {item.image && (
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-12 h-12 object-cover rounded mr-3 border"
+                                onError={e => { (e.target as HTMLImageElement).src = '/fallback-image.jpg'; }} // fallback image
+                              />
+                            )}
+                            <div>
+                              <div>
+                                {item.name} × {item.quantity}
+                                {item.size && (
+                                  <span className="ml-2 text-gray-500">({item.size})</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
                           <span>{formatPrice(item.price * item.quantity)}</span>
                         </div>
                       ))}
@@ -418,7 +455,11 @@ const Payment = () => {
               <div className="col-span-3 text-center py-16">
                 <h2 className="text-3xl font-playfair mb-4">Thank you for your purchase!</h2>
                 <p className="text-lg">Your payment was successful and your order has been received.</p>
-                <Link to="/" className="mt-8 inline-block bg-black text-white px-6 py-3 rounded">
+                <Link
+                  to="/"
+                  className="mt-8 inline-block bg-black text-white px-6 py-3 rounded"
+                  onClick={() => localStorage.removeItem('paymentSuccess')}
+                >
                   Go to Home
                 </Link>
               </div>

@@ -8,8 +8,18 @@ const orderRouter = express.Router();
 // Get all orders
 orderRouter.get('/api/orders', async (req, res) => {
   try {
-    // Return all fields, including customer (billing address)
-    const orders = await Order.find().sort({ createdAt: -1 });
+    // Explicitly include cartItems fields, including size
+    const orders = await Order.find({}, {
+      'cartItems.name': 1,
+      'cartItems.price': 1,
+      'cartItems.quantity': 1,
+      'cartItems.size': 1, // <-- Explicitly include size
+      'cartItems.image': 1,
+      
+      customer: 1,
+      paymentReference: 1,
+      createdAt: 1,
+    }).sort({ createdAt: -1 });
     res.json({ success: true, orders });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch orders' });

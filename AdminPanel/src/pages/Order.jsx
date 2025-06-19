@@ -73,7 +73,7 @@ const Order = () => {
                 <div key={i} className="flex items-center mb-2">
                   <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded mr-3" />
                   <div>
-                    <div className="font-semibold">{item.name}</div>
+                    <div className="font-semibold">{item.name} {item.size && <span className="text-gray-500">({item.size})</span>}</div>
                     <div className="text-sm text-gray-600">Qty: {item.quantity}</div>
                     <div className="text-sm text-gray-800">₦{(item.price * item.quantity).toLocaleString()}</div>
                   </div>
