@@ -5,6 +5,8 @@ import { backendUrl} from '../App';
 import { toast } from 'react-toastify';
 import { assets } from '../assets/assets';
 
+const backendUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 const UpdateProduct = ({ token }) => {
   const { id } = useParams();
