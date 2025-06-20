@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { backendUrl} from '../App';
+// import { backendUrl} from '../App';
 import { toast } from 'react-toastify';
 import { assets } from '../assets/assets';
+
+const backendUrl = import.meta.env.VITE_API_BASE_URL;
 
 
 const UpdateProduct = ({ token }) => {
