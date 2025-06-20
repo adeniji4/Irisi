@@ -8,7 +8,7 @@ const DesignerStatement = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <img
-              src="public/6558838f-f529-488b-80e5-bf1a0b39c1e0.JPG"
+              src="./public/6558838f-f529-488b-80e5-bf1a0b39c1e0.JPG"
               alt="Designer Dan"
               className="w-full aspect-[4/5] object-cover animate-scale-in"
             />
