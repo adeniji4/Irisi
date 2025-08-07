@@ -8,7 +8,7 @@ const IntroStatement = () => {
     {
       title: "Timeless over",
       subtitle: "Trendy",
-      description: "At Ìrísí, we believe true luxury isn’t just found in fine materials or expert craftsmanship, it's woven into the stories we tell and the heritage we honor with every stitch.",
+      description: "At Ìrísí, we believe true luxury isn’t just found in fine materials or expert craftsmanship, it's woven into the stories we tell and the heritage we honor.",
       stats: [
         { number: "10+", label: "Years Experience" },
         { number: "500+", label: "Pieces Created" },
