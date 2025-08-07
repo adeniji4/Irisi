@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 
 export const Login = ({setToken}) => {
   
-  const [email, setEmail] = useState('ClothingByDan@gmail.com')
-  const [password, setPassword] = useState('basket86')
+  const [email, setEmail] = useState('Irisiclothing@gmail.com')
+  const [password, setPassword] = useState('Basitwumexgafar')
 
   const onSubmitHandler = async (e) => {
     try {
