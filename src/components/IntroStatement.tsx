@@ -6,8 +6,8 @@ const IntroStatement = () => {
 
   const philosophies = [
     {
-      title: "Fashion is the armor to survive",
-      subtitle: "the reality of everyday life",
+      title: "Timeless over",
+      subtitle: "Trendy",
       description: "At Ìrísí, we believe true luxury isn’t just found in fine materials or expert craftsmanship, it's woven into the stories we tell and the heritage we honor with every stitch.",
       stats: [
         { number: "10+", label: "Years Experience" },
@@ -17,7 +17,7 @@ const IntroStatement = () => {
     },
     {
       title: "Tradition meets",
-      subtitle: "contemporary innovation",
+      subtitle: "innovation",
       description: "Each Ìrísí piece is more than a cap, it’s a crown of identity, culture, and timeless elegance, crafted to preserve the legacy of African tradition with modern grace.",
       stats: [
         { number: "100%", label: "Handcrafted" },
