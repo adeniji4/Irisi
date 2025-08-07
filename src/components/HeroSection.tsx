@@ -55,14 +55,19 @@ const HeroSection = () => {
             <p className="font-inter text-sm tracking-[0.3em] mb-4 opacity-90">LUXURY TRADITIONAL CAPS</p>
           </div> */}
           
-          <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-[0.9] animate-blur-in" style={{animationDelay: '0.5s'}}>
+          <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl font-light mb-8 leading-[0.9] animate-blur-in" style={{animationDelay: '0.7s'}}>
             <span className="font-bold" style={{ color: '#ff6600' }}>Ìrísí</span><br />
             <span className="italic font-normal">Heritage Meets Craft</span>
           </h1>
-          
-          <p className="font-inter text-lg md:text-xxl mb-16 tracking-wide max-w-2xl mx-auto opacity-120 leading-relaxed animate-fade-in-up" style={{animationDelay: '1s', color: '#ff6600'}}>
-            Ìrísí redefines elegance with handcrafted caps that tell timeless stories of identity, royalty, and culture
+
+          <p className="font-playfair text-3xl md:text-3xl lg:text-9l font-light mb-8 leading-[0.9] animate-blur-in" style={{animationDelay: '0.9s'}}>
+            <span className="font-bold" style={{ color: '#ff6600' }}>Ìrísí</span>
+            <span className="italic font-normal"> redefines elegance with handcrafted caps that tell timeless stories of identity, royalty, and culture</span>
           </p>
+          
+          {/* <p className="font-inter text-lg md:text-xxl mb-16 tracking-wide max-w-2xl mx-auto opacity-120 leading-relaxed animate-fade-in-up" style={{animationDelay: '1s', color: '#ff6600'}}>
+            Ìrísí redefines elegance with handcrafted caps that tell timeless stories of identity, royalty, and culture
+          </p> */}
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up" style={{animationDelay: '1.0s'}}>
             <Link to="/collections" className="group relative font-inter text-sm  tracking-[0.2em] border border-white px-12 py-4 hover:bg-[#ff6600] hover:text-black transition-all duration-700 overflow-hidden hover:shadow-[0px_8px_16px_rgba(0,0,0,0.4)]">
@@ -72,7 +77,7 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
             </Link>
             
-            <Link to="/Contact" className="group font-inter text-sm tracking-[0.2em] text-[#ff6600]/80 hover:text-white transition-all duration-300 border-b border-white/30 hover:border-white pb-1 hover:shadow-[0px_4px_8px_rgba(255,255,255,0.3)]">
+            <Link to="/Contact" className="group font-inter text-sm tracking-[0.2em] text-/80 hover:text-white transition-all duration-300 border-b border-white/30 hover:border-white pb-1 hover:shadow-[0px_4px_8px_rgba(255,255,255,0.3)]">
               CUSTOM ORDER
             </Link>
           </div>

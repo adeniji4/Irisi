@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const MouseShadow = () => {
@@ -42,7 +41,7 @@ const MouseShadow = () => {
         left: mousePosition.x,
         top: mousePosition.y,
         transform: 'translate(-50%, -50%)',
-        transition: 'all 0.1s ease-out',
+        transition: 'none', // Remove transition for instant movement
       }}
     >
       {/* Enhanced main cursor glow */}
@@ -56,12 +55,8 @@ const MouseShadow = () => {
       <div 
         className="absolute top-1/2 left-1/2 w-12 h-12 bg-black rounded-full opacity-30 blur-md transform -translate-x-1/2 -translate-y-1/2"
         style={{
-          boxShadow: '0 0 30px 15px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 0 30px 15px rgba(21, 21, 21, 0.3)',
         }}
-      />
-      {/* Inner cursor dot */}
-      <div 
-        className="absolute top-1/2 left-1/2 w-2 h-2 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2"
       />
     </div>
   );

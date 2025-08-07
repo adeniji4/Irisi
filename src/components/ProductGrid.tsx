@@ -94,7 +94,7 @@ const ProductGrid = () => {
 
   return (
     <>
-      <section id="collections" className="py-16 bg-white">
+      <section id="collections" className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div>

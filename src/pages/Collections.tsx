@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -6,12 +5,14 @@ import ProductModal from '../components/ProductModal';
 import { Button } from '../components/ui/button';
 import { useCart } from '../contexts/CartContext';
 import WhatsAppCTA from '../components/WhatsAppCTA';
+import { FiSearch } from 'react-icons/fi';
 
 const Collections = () => {
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addToCart,products } = useCart();
+  const [searchQuery, setSearchQuery] = useState('');
+  const { addToCart, products } = useCart();
   
   // const products = [
   //   { id: 1, name: 'Ankara Evening Gown', image: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', price: 450000, category: 'Women', fabric: 'Ankara', description: 'Exquisitely crafted evening gown featuring premium Ankara fabric with contemporary silhouette. Perfect for special occasions and formal events.' },
@@ -38,9 +39,11 @@ const Collections = () => {
 
   const filters = ['All', 'Men', 'Women', 'Unisex'];
   
-  const filteredProducts = selectedFilter === 'All' 
-    ? products 
-    : products.filter(product => product.category === selectedFilter);
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedFilter === 'All' || product.category === selectedFilter;
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const formatPrice = (price) => `₦${price.toLocaleString()}`;
 
@@ -103,23 +106,54 @@ const Collections = () => {
           </div>
         </section>
 
-        {/* Filters */}
-        <section className="py-16 bg-gray-50 border-y border-gray-200">
+        {/* Filters + Search Bar */}
+        <section className="py-10 bg-gray-50 border-y border-gray-100">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-center space-x-8">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setSelectedFilter(filter)}
-                  className={`font-inter text-sm tracking-wider transition-all duration-300 pb-2 ${
-                    selectedFilter === filter 
-                      ? 'text-black border-b-2 border-black' 
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  {filter.toUpperCase()}
-                </button>
-              ))}
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              {/* Animated Search Icon/Input (left) */}
+              <div className="flex-1 flex items-center">
+                <div className="relative group">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-300 hover:bg-gray-100 focus:bg-gray-100 transition-all"
+                    tabIndex={0}
+                    aria-label="Search"
+                    onFocus={e => {
+                      const next = e.currentTarget.nextSibling as HTMLElement | null;
+                      next?.focus();
+                    }}
+                  >
+                    <FiSearch className="text-xl text-gray-500" />
+                  </button>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    placeholder="Search by item name..."
+                    className="absolute left-0 top-0 h-10 pl-12 pr-4 w-0 opacity-0 border border-gray-300 rounded font-inter text-sm bg-white transition-all duration-300 group-hover:w-64 group-hover:opacity-100 group-focus-within:w-64 group-focus-within:opacity-100 focus:outline-none focus:border-black"
+                    style={{ zIndex: 10 }}
+                    onBlur={e => { if (!e.currentTarget.value) e.currentTarget.style.width = '0'; }}
+                  />
+                </div>
+              </div>
+              {/* Filter Buttons (slightly left) */}
+              <div className="flex-1 flex justify-start md:ml-0">
+                <div className="flex space-x-6">
+                  {filters.map((filter) => (
+                    <button
+                      key={filter}
+                      onClick={() => setSelectedFilter(filter)}
+                      className={`font-inter text-sm tracking-wider transition-all duration-300 pb-2 ${
+                        selectedFilter === filter 
+                          ? 'text-black border-b-2 border-black' 
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      {filter.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -127,41 +161,42 @@ const Collections = () => {
         {/* Product Grid */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {[...filteredProducts].reverse().map((product, index) => (
                 <div 
                   key={product._id} 
                   className="group animate-fade-in-up"
                   style={{animationDelay: `${index * 0.1}s`}}
                 >
-                  <div className="relative overflow-hidden bg-gray-100 aspect-[3/4] mb-4" >
+                  <div className="relative overflow-hidden bg-gray-100 aspect-[3/4] mb-2" style={{ height: '260px' }}>
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      style={{ height: '100%', objectFit: 'cover' }}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500"></div>
                   </div>
                   
-                  <div className="text-center space-y-3">
-                    <h3 className="font-playfair text-lg font-light">{product.name}</h3>
-                    <p className="font-inter text-sm text-gray-500">{product.fabric}</p>
-                    <p className="font-inter text-gray-900 font-medium">{formatPrice(product.price)}</p>
+                  <div className="text-center space-y-2 px-2 py-2">
+                    <h3 className="font-playfair text-base font-light">{product.name}</h3>
+                    <p className="font-inter text-xs text-gray-500">{product.fabric}</p>
+                    <p className="font-inter text-gray-900 font-medium text-sm">{formatPrice(product.price)}</p>
                     
                     {/* Action Buttons */}
-                    <div className="flex gap-2 justify-center pt-2">
+                    <div className="flex gap-1 justify-center pt-1">
                       <Button 
                         onClick={() => handleViewProduct(product)}
                         variant="outline"
                         size="sm"
-                        className="font-inter text-xs tracking-wider border-black text-black hover:bg-black hover:text-white transition-all duration-300" 
+                        className="font-inter text-xs tracking-wider border-black text-black hover:bg-black hover:text-white transition-all duration-300 px-2 py-1" 
                       >
                         VIEW
                       </Button>
                       <Button
                         onClick={() => handleAddToCart(product)}
                         size="sm"
-                        className="font-inter text-xs tracking-wider bg-[#ff6600] text-white hover:bg-gray-800 transition-all duration-300" 
+                        className="font-inter text-xs tracking-wider bg-[#ff6600] text-white hover:bg-gray-800 transition-all duration-300 px-2 py-1" 
                       >
                         ADD TO CART
                       </Button>

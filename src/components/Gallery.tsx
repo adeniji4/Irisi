@@ -143,10 +143,10 @@ const Gallery = () => {
 
   return (
     <>
-      <section className="py-32 bg-white overflow-hidden">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="max-w-full px-6">
           <div className="text-center mb-20">
-            <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div>
+            {/* <div className="w-24 h-px bg-gray-300 mx-auto mb-8"></div> */}
             <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up"  style={{color: '#ff6600'}}>
               Our Collections
             </h2>
