@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const CTABanner = () => {
   return (
-    <section className="py-32 bg-[#ff6600] relative overflow-hidden">
+    <section className="py-20 bg-[#ff6600] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border border-white rotate-45"></div>
@@ -43,20 +42,20 @@ const CTABanner = () => {
           </Link>
         </div>
 
-        <div className="mt-20 flex items-center justify-center space-x-16 text-white animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+        <div className="mt-10 flex flex-row items-center justify-center space-x-4 md:space-x-8 text-white animate-fade-in-up" style={{animationDelay: '0.6s'}}>
           <div className="text-center">
-            <div className="font-playfair text-2xl font-light mb-2">24/7</div>
-            <div className="font-inter text-sm tracking-wider uppercase">Support</div>
+            <div className="font-playfair text-xl md:text-2xl font-light mb-1 md:mb-2">24/7</div>
+            <div className="font-inter text-xs md:text-sm tracking-wider uppercase">Support</div>
           </div>
-          <div className="w-px h-12 bg-white/20"></div>
+          <div className="w-px h-8 md:h-12 bg-white/20"></div>
           <div className="text-center">
-            <div className="font-playfair text-2xl font-light mb-2">1+ Week</div>
-            <div className="font-inter text-sm tracking-wider uppercase">Custom Orders</div>
+            <div className="font-playfair text-xl md:text-2xl font-light mb-1 md:mb-2">1+ Week</div>
+            <div className="font-inter text-xs md:text-sm tracking-wider uppercase">Custom Orders</div>
           </div>
-          <div className="w-px h-12 bg-white/20"></div>
+          <div className="w-px h-8 md:h-12 bg-white/20"></div>
           <div className="text-center">
-            <div className="font-playfair text-2xl font-light mb-2">Worldwide</div>
-            <div className="font-inter text-sm tracking-wider uppercase">Shipping</div>
+            <div className="font-playfair text-xl md:text-2xl font-light mb-1 md:mb-2">Worldwide</div>
+            <div className="font-inter text-xs md:text-sm tracking-wider uppercase">Shipping</div>
           </div>
         </div>
       </div>

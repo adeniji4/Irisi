@@ -30,7 +30,7 @@ const Testimonials = () => {
   }, []);
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h2 className="font-playfair text-4xl md:text-5xl font-light mb-20 animate-fade-in-up" style={{color: '#ff6600'}}>
           Client Stories

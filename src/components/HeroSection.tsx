@@ -45,7 +45,7 @@ const HeroSection = () => {
 
       {/* Floating Elements */}
       <div className="absolute top-1/4 left-10 w-1 h-32 bg-white/20 animate-float"></div>
-      <div className="absolute bottom-1/4 right-20 w-1 h-24 bg-white/30 animate-float" style={{animationDelay: '2s'}}></div>
+      <div className="absolute bottom-1/4 right-10 w-1 h-24 bg-white/30 animate-float" style={{animationDelay: '2s'}}></div>
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-center text-center text-white">

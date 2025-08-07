@@ -25,7 +25,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-32 bg-gray-50">
+    <section className="py-20 bg-gray-50">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-20">
           <h2 className="font-playfair text-4xl md:text-5xl font-light mb-6 animate-fade-in-up">
