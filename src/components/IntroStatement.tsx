@@ -28,7 +28,7 @@ const IntroStatement = () => {
     {
       title: "Excellence in",
       subtitle: "every detail",
-      description: "From thread to form, Ìrísí is where heritage is sculpted into style bridging generations through design that speaks without words.",
+      description: "From thread to form, Ìrísí is where heritage is sculpted into style bridging generations through design that speaks without word but with stitches.",
       stats: [
         { number: "∞", label: "Quality Check" },
         { number: "5+", label: "Hours Per Piece" },
